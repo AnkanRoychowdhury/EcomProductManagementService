@@ -1,25 +1,18 @@
-const { ProductService } = require("../services/index");
+const { CategoryService } = require("../services/index");
 const { StatusCodes } = require("http-status-codes");
 
-const productService = new ProductService();
+const categoryService = new CategoryService();
 
 const create = async (req,res) => {
     try {
-        const response = await productService.create({
+        const response = await categoryService.create({
             name: req.body.name,
-            title: req.body.title,
-            slug: generateSlug(req.body.name),
-            description: req.body.description,
-            sku: req.body.sku,
-            allow_backorders: req.body.allow_backorders,
-            is_public: req.body.is_public,
-            rating: req.body.rating,
-            is_shippable: req.body.is_shippable
+            slug: generateSlug(req.body.name)
         });
         return res.status(StatusCodes.CREATED).json({
             data: response,
             success: true,
-            message: 'Successfully created the product',
+            message: 'Successfully created the category',
             err: {}
         });
     } catch (error) {
@@ -34,11 +27,19 @@ const create = async (req,res) => {
 
 const get = async (req,res) => {
     try {
-        const response = await productService.get(req.param.id);
+        const response = await categoryService.get(req.param.id);
+        if(!response){
+            return res.status(StatusCodes.NOT_FOUND).json({
+                data: {},
+                success: false,
+                message: 'No category associated with the id',
+                err: 'Not Found'
+            });
+        }
         return res.status(StatusCodes.OK).json({
             data: response,
             success: true,
-            message: 'Successfully fetched the product',
+            message: 'Successfully fetched the category',
             err: {}
         });
     } catch (error) {
@@ -53,11 +54,11 @@ const get = async (req,res) => {
 
 const getAll = async (req,res) => {
     try {
-        const response = await productService.getAll(req.param.id);
+        const response = await categoryService.getAll(req.param.id);
         return res.status(StatusCodes.OK).json({
             data: response,
             success: true,
-            message: 'Successfully fetched all the products',
+            message: 'Successfully fetched all the category',
             err: {}
         });
     } catch (error) {
@@ -72,11 +73,11 @@ const getAll = async (req,res) => {
 
 const update = async (req,res) => {
     try {
-        const response = await productService.update(req.param.id);
+        const response = await categoryService.update(req.param.id);
         return res.status(StatusCodes.OK).json({
             data: response,
             success: true,
-            message: 'Successfully fetched the product',
+            message: 'Successfully updated the category',
             err: {}
         });
     } catch (error) {
@@ -91,7 +92,7 @@ const update = async (req,res) => {
 
 const destroy = async (req,res) => {
     try {
-        await productService.destroy(req.param.id);
+        await categoryService.destroy(req.param.id);
         return res.status(StatusCodes.OK).json({
             success: true,
             message: 'Successfully deleted the product',
@@ -113,20 +114,6 @@ module.exports = {
     getAll,
     destroy
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 const generateSlug = (slugName) => {
