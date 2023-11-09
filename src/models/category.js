@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const product = require('./product')
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     /**
@@ -11,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsToMany(models.Product, { through: 'Product_Category' });
     }
   }
   Category.init({
