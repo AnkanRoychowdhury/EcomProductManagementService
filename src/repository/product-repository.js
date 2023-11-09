@@ -1,5 +1,9 @@
 const CrudRepository = require("./crud-repository");
-const { Product,ProductImage } = require('../models/index');
+
+const { Product, ProductImage, Category } = require('../models/index');
+const { AppError } = require("../utils/errors/index");
+const { StatusCodes } = require("http-status-codes");
+const {Op} = require('sequelize');
 
 class ProductRepository extends CrudRepository {
     constructor(){
@@ -24,6 +28,43 @@ class ProductRepository extends CrudRepository {
                 StatusCodes.INTERNAL_SERVER_ERROR
             );
         }
+    }
+
+    async getProducts (filter) {
+        try {
+            const filterObj = this.#productFilter(filter);
+            let result = {};
+            if(filterObj.category){
+                const category = await Category.findOne({
+                    where: {
+                        name: filterObj.category
+                    }
+                });
+                const data = await category.getProducts();
+                Object.assign(result,data);
+                return result;
+            }
+            result = await Product.findAll();
+            return result;
+        } catch (error) {
+            console.log(error);
+            throw new AppError(
+                'RepositoryError',
+                'Unable to get all the details',
+                'Unable to get please try later',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    #productFilter(data){
+        let filter = {};
+        if(data.categoryName){
+            Object.assign(filter,{
+                category: data.categoryName
+            });
+        }
+        return filter;
     }
 }
 

@@ -54,7 +54,7 @@ const get = async (req,res) => {
 
 const getAll = async (req,res) => {
     try {
-        const response = await productService.getAll(req.param.id);
+        const response = await productService.getProducts(req.query);
         return res.status(StatusCodes.OK).json({
             data: response,
             success: true,
