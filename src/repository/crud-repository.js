@@ -73,17 +73,25 @@ class CrudRepository {
     }
 
     async get (Id) {
+        let appError;
         try {
-            const result = await this.model.findByPk(Id);
+            const result = await this.model.findOne({
+                where:{
+                    id: Id
+                }
+            });
+            if(result == null){
+                throw appError = new AppError(
+                    'ItemNotFoundError',
+                    'Given Id not associated to any item',
+                    'Issue found to fetch data',
+                    StatusCodes.NOT_FOUND
+                );
+            }
             return result;
         } catch (error) {
             console.log(error);
-            throw new AppError(
-                'RepositoryError',
-                'Unable to Get the details',
-                'Unable to get please try later',
-                StatusCodes.INTERNAL_SERVER_ERROR
-            );
+            throw appError;
         }
     }
 

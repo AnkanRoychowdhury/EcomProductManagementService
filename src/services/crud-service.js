@@ -69,10 +69,10 @@ class CrudService {
         } catch (error) {
             console.log(error);
             throw new AppError(
-                'ServerError',
-                'Something went wrong',
-                'Issue found to fetch data',
-                StatusCodes.INTERNAL_SERVER_ERROR
+                error.name,
+                error.message,
+                error.explanation,
+                error.statusCode
             );
         }
     }

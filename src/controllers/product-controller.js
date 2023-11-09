@@ -34,7 +34,7 @@ const create = async (req,res) => {
 
 const get = async (req,res) => {
     try {
-        const response = await productService.get(req.param.id);
+        const response = await productService.get(req.params.id);
         return res.status(StatusCodes.OK).json({
             data: response,
             success: true,
@@ -42,6 +42,7 @@ const get = async (req,res) => {
             err: {}
         });
     } catch (error) {
+        console.log(error);
         return res.status(error.statusCode).json({
             data: {},
             success: false,

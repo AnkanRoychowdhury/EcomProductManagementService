@@ -1,3 +1,4 @@
+const { response } = require("express");
 const { CategoryService } = require("../services/index");
 const { StatusCodes } = require("http-status-codes");
 
@@ -27,15 +28,7 @@ const create = async (req,res) => {
 
 const get = async (req,res) => {
     try {
-        const response = await categoryService.get(req.param.id);
-        if(!response){
-            return res.status(StatusCodes.NOT_FOUND).json({
-                data: {},
-                success: false,
-                message: 'No category associated with the id',
-                err: 'Not Found'
-            });
-        }
+        const response = await categoryService.get(req.params.id);
         return res.status(StatusCodes.OK).json({
             data: response,
             success: true,
@@ -43,6 +36,7 @@ const get = async (req,res) => {
             err: {}
         });
     } catch (error) {
+        console.log(error);
         return res.status(error.statusCode).json({
             data: {},
             success: false,
@@ -54,7 +48,7 @@ const get = async (req,res) => {
 
 const getAll = async (req,res) => {
     try {
-        const response = await categoryService.getAll(req.param.id);
+        const response = await categoryService.getAll();
         return res.status(StatusCodes.OK).json({
             data: response,
             success: true,

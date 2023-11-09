@@ -5,14 +5,14 @@ class AppError extends Error {
         name = 'AppError',
         message = 'Something went wrong',
         explanation = 'Something went wrong',
-        statusCodes = StatusCodes.INTERNAL_SERVER_ERROR
+        statusCode = StatusCodes.INTERNAL_SERVER_ERROR
     )
     {
         super();
         this.name = name,
         this.message = message,
         this.explanation = explanation,
-        this.statusCodes = statusCodes
+        this.statusCode = statusCode
     }
 }
 
