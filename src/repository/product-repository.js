@@ -32,12 +32,11 @@ class ProductRepository extends CrudRepository {
 
     async getProducts (filter) {
         try {
-            const filterObj = this.#productFilter(filter);
             let result = {};
-            if(filterObj.category){
+            if(filter.categoryName){
                 const category = await Category.findOne({
                     where: {
-                        name: filterObj.category
+                        name: filter.categoryName
                     }
                 });
                 const data = await category.getProducts();
