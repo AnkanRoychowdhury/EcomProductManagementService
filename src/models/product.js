@@ -13,15 +13,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsToMany(models.Category, { through: 'Product_Category' });
-      this.hasMany(models.ProductImage)
+      // this.hasMany(models.ProductImage);
+      // this.hasOne(models.ProductPrice);
     }
   }
   Product.init({
-    name:{
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
     title: {
       type: DataTypes.STRING,
       allowNull: false
@@ -30,24 +26,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    description: DataTypes.TEXT,
-    sku: DataTypes.STRING,
-    allow_backorders: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
     },
-    is_public: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     rating: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
+      type: DataTypes.JSON,
+      defaultValue: {"rate": 0, "count": 0}
     },
-    is_shippable: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
-    }
   }, {
     sequelize,
     modelName: 'Product',

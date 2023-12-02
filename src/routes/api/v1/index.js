@@ -1,4 +1,5 @@
 const express = require("express");
+
 const { ProductController, CategoryController } = require("../../../controllers/index");
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router.get('/categories',CategoryController.getAll);
  * Check user has the access to create or update (Only admin & vendor will have the access)
  */
 router.post('/products',ProductController.create);
+router.post('/products',ProductController.bulkCreate);
 router.put('/products/:id',ProductController.update);
 
 router.post('/categories',CategoryController.create);

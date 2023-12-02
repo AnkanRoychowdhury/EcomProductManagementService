@@ -20,6 +20,21 @@ class CrudRepository {
         }
     }
 
+    async bulkCreate (data) {
+        try {
+            const result = await this.model.bulkCreate(data);
+            return result;
+        } catch (error) {
+            console.log(error);
+            throw new AppError(
+                'RepositoryError',
+                'Unable to create',
+                'Unable to create please try later',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
     async update (Id,data) {
         try {
             const result = await this.model.update(data,{

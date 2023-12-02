@@ -5,16 +5,14 @@ const productService = new ProductService();
 
 const create = async (req,res) => {
     try {
-        const response = await productService.create({
-            name: req.body.name,
+        const response = await productService.createProduct({
             title: req.body.title,
-            slug: generateSlug(req.body.name),
+            slug: generateSlug(req.body.title),
             description: req.body.description,
-            sku: req.body.sku,
-            allow_backorders: req.body.allow_backorders,
-            is_public: req.body.is_public,
+            image: req.body.image,
+            price: req.body.price,
+            category: req.body.category,
             rating: req.body.rating,
-            is_shippable: req.body.is_shippable
         });
         return res.status(StatusCodes.CREATED).json({
             data: response,
@@ -23,6 +21,27 @@ const create = async (req,res) => {
             err: {}
         });
     } catch (error) {
+        console.log(error);
+        return res.status(error.statusCode).json({
+            data: {},
+            success: false,
+            message: error.message,
+            err: error.explanation
+        });
+    }
+}
+
+const bulkCreate = async (req,res) => {
+    try {
+        const response = await productService.bulkCreate(req.body);
+        return res.status(StatusCodes.CREATED).json({
+            data: response,
+            success: true,
+            message: 'Successfully created the products',
+            err: {}
+        });
+    } catch (error) {
+        console.log(error);
         return res.status(error.statusCode).json({
             data: {},
             success: false,
@@ -112,7 +131,8 @@ module.exports = {
     update,
     get,
     getAll,
-    destroy
+    destroy,
+    bulkCreate
 }
 
 

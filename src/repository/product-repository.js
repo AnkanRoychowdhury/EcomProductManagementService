@@ -10,25 +10,25 @@ class ProductRepository extends CrudRepository {
         super(Product);
     }
 
-    async create (data) {
-        try {
-            const result = await Product.create(data);
-            const productId = result.dataValues.id;
-            await ProductImage.findOrCreate({
-                where: { ProductId: productId }
-            });
-            result.addProductImage(productId)
-            return result;
-        } catch (error) {
-            console.log(error);
-            throw new AppError(
-                'RepositoryError',
-                'Unable to create',
-                'Unable to create please try later',
-                StatusCodes.INTERNAL_SERVER_ERROR
-            );
-        }
-    }
+    // async create (data) {
+    //     try {
+    //         const result = await Product.create(data);
+    //         const productId = result.dataValues.id;
+    //         await ProductImage.findOrCreate({
+    //             where: { ProductId: productId }
+    //         });
+    //         result.addProductImage(productId)
+    //         return result;
+    //     } catch (error) {
+    //         console.log(error);
+    //         throw new AppError(
+    //             'RepositoryError',
+    //             'Unable to create',
+    //             'Unable to create please try later',
+    //             StatusCodes.INTERNAL_SERVER_ERROR
+    //         );
+    //     }
+    // }
 
     async getProducts (filter) {
         try {
@@ -44,7 +44,9 @@ class ProductRepository extends CrudRepository {
                 Object.assign(result,data);
                 return result;
             }
-            result = await Product.findAll();
+            result = await Product.findAll({
+                include: [Category],
+            });
             return result;
         } catch (error) {
             console.log(error);

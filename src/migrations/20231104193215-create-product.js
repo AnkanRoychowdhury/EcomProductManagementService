@@ -9,11 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name:{
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
       title: {
         type: Sequelize.STRING,
         allowNull: false
@@ -22,27 +17,21 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      price: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+      },
       description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false,
       },
-      sku: {
-        type: Sequelize.STRING
-      },
-      allow_backorders: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      },
-      is_public: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
+      image: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       rating: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      is_shippable: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
+        type: Sequelize.JSON,
+        defaultValue: {"rate": 0, "count": 0}
       },
       createdAt: {
         allowNull: false,
